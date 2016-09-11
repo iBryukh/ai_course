@@ -30,7 +30,7 @@ public class Console {
     }
 
     public String read(){
-        return scanner.next();
+        return scanner.nextLine();
     }
 
     public void close(){
