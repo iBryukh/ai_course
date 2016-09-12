@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args){
         Console console = new Console(System.in, System.out);
-        //connecting(console);
+        connecting(console);
         ChatBot bot = new ChatBot();
 
         while (!bot.isEnd()){
