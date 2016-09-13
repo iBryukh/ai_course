@@ -1,0 +1,80 @@
+[
+  {
+    "name": "apple",
+    "forms": [
+      "CIRCLE",
+      "SQUARE"
+    ],
+    "colors": [
+      "BLACK",
+      "ORANGE"
+    ],
+    "sizes": [
+      "LARGE",
+      "SMALL"
+    ]
+  },
+  {
+    "name": "apple",
+    "forms": [
+      "CIRCLE",
+      "SQUARE"
+    ],
+    "colors": [
+      "BLACK",
+      "ORANGE"
+    ],
+    "sizes": [
+      "LARGE",
+      "SMALL"
+    ]
+  },
+  {
+    "name": "other",
+    "forms": [
+      "CIRCLE",
+      "SQUARE"
+    ],
+    "colors": [
+      "BLACK",
+      "ORANGE",
+      "WHITE"
+    ],
+    "sizes": [
+      "LARGE",
+      "SMALL"
+    ]
+  },
+  {
+    "name": "other",
+    "forms": [
+      "CIRCLE",
+      "SQUARE"
+    ],
+    "colors": [
+      "BLACK",
+      "ORANGE",
+      "WHITE"
+    ],
+    "sizes": [
+      "LARGE",
+      "SMALL"
+    ]
+  },
+  {
+    "name": "other",
+    "forms": [
+      "CIRCLE",
+      "SQUARE"
+    ],
+    "colors": [
+      "BLACK",
+      "ORANGE",
+      "WHITE"
+    ],
+    "sizes": [
+      "LARGE",
+      "SMALL"
+    ]
+  }
+]

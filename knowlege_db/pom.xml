@@ -4,10 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>borsch.knowlege_db</groupId>
-    <artifactId>knowlege_db</artifactId>
+    <groupId>borsch.knowledge_db</groupId>
+    <artifactId>knowledge_db</artifactId>
     <version>1.0</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.7</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -21,7 +28,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>borsch.knowlege_db.Main</mainClass>
+                            <mainClass>borsch.knowledge_db.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
