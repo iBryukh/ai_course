@@ -3,78 +3,128 @@
     "name": "apple",
     "forms": [
       "CIRCLE",
-      "SQUARE"
+      "OVAL"
     ],
     "colors": [
-      "BLACK",
-      "ORANGE"
-    ],
-    "sizes": [
-      "LARGE",
-      "SMALL"
-    ]
-  },
-  {
-    "name": "apple",
-    "forms": [
-      "CIRCLE",
-      "SQUARE"
-    ],
-    "colors": [
-      "BLACK",
-      "ORANGE"
-    ],
-    "sizes": [
-      "LARGE",
-      "SMALL"
-    ]
-  },
-  {
-    "name": "other",
-    "forms": [
-      "CIRCLE",
-      "SQUARE"
-    ],
-    "colors": [
-      "BLACK",
       "ORANGE",
-      "WHITE"
+      "RED",
+      "YELLOW"
+    ],
+    "types": [
+      "FOOD"
+    ],
+    "alive": [
+      "ALIVE",
+      "DIFFICULT_TO_SAY"
     ],
     "sizes": [
-      "LARGE",
       "SMALL"
     ]
   },
   {
-    "name": "other",
+    "name": "pear",
     "forms": [
       "CIRCLE",
-      "SQUARE"
+      "OVAL"
     ],
     "colors": [
-      "BLACK",
       "ORANGE",
-      "WHITE"
+      "RED",
+      "YELLOW"
+    ],
+    "types": [
+      "FOOD"
+    ],
+    "alive": [
+      "ALIVE",
+      "DIFFICULT_TO_SAY"
     ],
     "sizes": [
-      "LARGE",
       "SMALL"
     ]
   },
   {
-    "name": "other",
+    "name": "yellow ball",
     "forms": [
-      "CIRCLE",
-      "SQUARE"
+      "CIRCLE"
+    ],
+    "colors": [
+      "YELLOW"
+    ],
+    "types": [
+      "OTHER"
+    ],
+    "alive": [
+      "NOT_ALIVE"
+    ],
+    "sizes": [
+      "SMALL"
+    ]
+  },
+  {
+    "name": "car",
+    "forms": [
+      "OTHER"
     ],
     "colors": [
       "BLACK",
+      "WHITE",
+      "YELLOW",
       "ORANGE",
-      "WHITE"
+      "RED",
+      "OTHER"
+    ],
+    "types": [
+      "TRANSPORT"
+    ],
+    "alive": [
+      "NOT_ALIVE"
     ],
     "sizes": [
       "LARGE",
-      "SMALL"
+      "MEDIUM"
+    ]
+  },
+  {
+    "name": "branch",
+    "forms": [
+      "OTHER"
+    ],
+    "colors": [
+      "RED",
+      "WHITE",
+      "BLACK"
+    ],
+    "types": [
+      "OTHER"
+    ],
+    "alive": [
+      "NOT_ALIVE"
+    ],
+    "sizes": [
+      "LARGE",
+      "MEDIUM"
+    ]
+  },
+  {
+    "name": "dog",
+    "forms": [
+      "OTHER"
+    ],
+    "colors": [
+      "RED",
+      "WHITE",
+      "BLACK"
+    ],
+    "types": [
+      "ANIMAL"
+    ],
+    "alive": [
+      "ALIVE"
+    ],
+    "sizes": [
+      "SMALL",
+      "MEDIUM"
     ]
   }
 ]

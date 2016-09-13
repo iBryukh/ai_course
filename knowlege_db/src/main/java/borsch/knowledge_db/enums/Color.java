@@ -13,6 +13,8 @@ public enum Color {
 
     ORANGE,
 
+    RED,
+
     OTHER
 
 }

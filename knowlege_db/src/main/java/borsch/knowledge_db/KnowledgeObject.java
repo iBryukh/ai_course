@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class KnowledgeObject {
 
+    public static final int NUMBER_OF_FIELDS_TO_COMPARE = 5;
+
     private String name;
 
     private List<Form> forms;
