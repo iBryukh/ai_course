@@ -14,8 +14,27 @@ class Mover
   int frameCount=0;
 
   /* State contains the game map */
-  boolean[][] state;
-
+  int[][] state;
+  public static int [][] initState = {{1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1},
+  		{1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1},
+  		{1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1},
+  		{1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1},
+  		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
+  		{1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1},
+  		{1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1},
+  		{1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1},
+  		{1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1},
+  		{0, 0, 1, 0, 0, 0, 1, 1, 2, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1},
+  		{1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1},
+  		{1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1},
+  		{1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1},
+  		{1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1},
+  		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1},
+  		{1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1},
+  		{1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1},
+  		{1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1},
+  		{1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1},
+  		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
   /* gridSize is the size of one square in the game.
      max is the height/width of the game.
      increment is the speed at which the object moves,
@@ -30,18 +49,12 @@ class Mover
     gridSize=20;
     increment = 4;
     max = 400;
-    state = new boolean[20][20];
-    for(int i =0;i<20;i++)
-    {
-      for(int j=0;j<20;j++)
-      {
-        state[i][j] = false;
-      }
-    }
+    state =  initState;
+
   }
 
   /* Updates the state information */
-  public void updateState(boolean[][] state)
+  public void updateState(int[][] state)
   {
     for(int i =0;i<20;i++)
     {
@@ -57,7 +70,7 @@ class Mover
   {
     /* The first statements check that the x and y are inbounds.  The last statement checks the map to
        see if it's a valid location */
-    if ((((x)%20==0) || ((y)%20)==0) && 20<=x && x<400 && 20<= y && y<400 && state[x/20-1][y/20-1] )
+    if ((((x)%20==0) || ((y)%20)==0) && 20<=x && x<400 && 20<= y && y<400 && state[x/20-1][y/20-1]!=0 )
     {
       return true;
     }
@@ -548,10 +561,6 @@ public class Board extends JPanel
 
   /* Initialize the player and ghosts */
   Player player = new Player(200,300);
-  Ghost ghost1 = new Ghost(180,180);
-  Ghost ghost2 = new Ghost(200,180);
-  Ghost ghost3 = new Ghost(220,180);
-  Ghost ghost4 = new Ghost(220,180);
 
   /* Timer is used for playing sound effects and animations */
   long timer = System.currentTimeMillis();
@@ -570,10 +579,7 @@ public class Board extends JPanel
   int numLives=2;
 
   /*Contains the game map, passed to player and ghosts */
-  boolean[][] state;
-
-  /* Contains the state of all pellets*/
-  boolean[][] pellets;
+  int[][] state;
 
   /* Game dimensions */
   int gridSize;
@@ -587,9 +593,6 @@ public class Board extends JPanel
   boolean demo = false;
   int New;
 
-  /* Used to call sound effects */
-  GameSounds sounds;
-
   int lastPelletEatenX = 0;
   int lastPelletEatenY=0;
 
@@ -600,7 +603,6 @@ public class Board extends JPanel
   public Board() 
   {
     initHighScores();
-    sounds = new GameSounds();
     currScore=0;
     stopped=false;
     max=400;
@@ -663,51 +665,33 @@ public class Board extends JPanel
   public void reset()
   {
     numLives=2;
-    state = new boolean[20][20];
-    pellets = new boolean[20][20];
-
+    state = new int[20][20];
     /* Clear state and pellets arrays */
     for(int i=0;i<20;i++)
     {
       for(int j=0;j<20;j++)
       {
-        state[i][j]=true;
-        pellets[i][j]=true;
+        state[i][j]=0;
+        //pellets[i][j]=true;
       }
     }
+    
 
     /* Handle the weird spots with no pellets*/
-    for(int i = 5;i<14;i++)
+    /*for(int i = 5;i<14;i++)
     {
       for(int j = 5;j<12;j++)
       {
         pellets[i][j]=false;
       }
-    }
-    pellets[9][7] = false;
-    pellets[8][8] = false;
-    pellets[9][8] = false;
-    pellets[10][8] = false;
+    }*/
+    //pellets[8][8] = false;
+    //pellets[9][8] = false;
+    
+    //pellets[10][8] = true;
 
   }
 
-
-  /* Function is called during drawing of the map.
-     Whenever the a portion of the map is covered up with a barrier,
-     the map and pellets arrays are updated accordingly to note
-     that those are invalid locations to travel or put pellets
-  */
-  public void updateMap(int x,int y, int width, int height)
-  {
-    for (int i =x/gridSize; i<x/gridSize+width/gridSize;i++)
-    {
-      for (int j=y/gridSize;j<y/gridSize+height/gridSize;j++)
-      {
-        state[i-1][j-1]=false;
-        pellets[i-1][j-1]=false;
-      }
-    }
-  } 
 
 
   /* Draws the appropriate number of lives on the bottom left of the screen.
@@ -750,96 +734,14 @@ public class Board extends JPanel
         g.drawRect(19,19,382,382);
         g.setColor(Color.BLUE);
 
-        g.fillRect(40,40,60,20);
-          updateMap(40,40,60,20);
-        g.fillRect(120,40,60,20);
-          updateMap(120,40,60,20);
-        g.fillRect(200,20,20,40);
-          updateMap(200,20,20,40);
-        g.fillRect(240,40,60,20);
-          updateMap(240,40,60,20);
-        g.fillRect(320,40,60,20);
-          updateMap(320,40,60,20);
-        g.fillRect(40,80,60,20);
-          updateMap(40,80,60,20);
-        g.fillRect(160,80,100,20);
-          updateMap(160,80,100,20);
-        g.fillRect(200,80,20,60);
-          updateMap(200,80,20,60);
-        g.fillRect(320,80,60,20);
-          updateMap(320,80,60,20);
-
-        g.fillRect(20,120,80,60);
-          updateMap(20,120,80,60);
-        g.fillRect(320,120,80,60);
-          updateMap(320,120,80,60);
-        g.fillRect(20,200,80,60);
-          updateMap(20,200,80,60);
-        g.fillRect(320,200,80,60);
-          updateMap(320,200,80,60);
-
-        g.fillRect(160,160,40,20);
-          updateMap(160,160,40,20);
-        g.fillRect(220,160,40,20);
-          updateMap(220,160,40,20);
-        g.fillRect(160,180,20,20);
-          updateMap(160,180,20,20);
-        g.fillRect(160,200,100,20);
-          updateMap(160,200,100,20);
-        g.fillRect(240,180,20,20);
-        updateMap(240,180,20,20);
-        g.setColor(Color.BLUE);
-
-
-        g.fillRect(120,120,60,20);
-          updateMap(120,120,60,20);
-        g.fillRect(120,80,20,100);
-          updateMap(120,80,20,100);
-        g.fillRect(280,80,20,100);
-          updateMap(280,80,20,100);
-        g.fillRect(240,120,60,20);
-          updateMap(240,120,60,20);
-
-        g.fillRect(280,200,20,60);
-          updateMap(280,200,20,60);
-        g.fillRect(120,200,20,60);
-          updateMap(120,200,20,60);
-        g.fillRect(160,240,100,20);
-          updateMap(160,240,100,20);
-        g.fillRect(200,260,20,40);
-          updateMap(200,260,20,40);
-
-        g.fillRect(120,280,60,20);
-          updateMap(120,280,60,20);
-        g.fillRect(240,280,60,20);
-          updateMap(240,280,60,20);
-
-        g.fillRect(40,280,60,20);
-          updateMap(40,280,60,20);
-        g.fillRect(80,280,20,60);
-          updateMap(80,280,20,60);
-        g.fillRect(320,280,60,20);
-          updateMap(320,280,60,20);
-        g.fillRect(320,280,20,60);
-          updateMap(320,280,20,60);
-
-        g.fillRect(20,320,40,20);
-          updateMap(20,320,40,20);
-        g.fillRect(360,320,40,20);
-          updateMap(360,320,40,20);
-        g.fillRect(160,320,100,20);
-          updateMap(160,320,100,20);
-        g.fillRect(200,320,20,60);
-          updateMap(200,320,20,60);
-
-        g.fillRect(40,360,140,20);
-          updateMap(40,360,140,20);
-        g.fillRect(240,360,140,20);
-          updateMap(240,360,140,20);
-        g.fillRect(280,320,20,40);
-          updateMap(280,320,20,60);
-        g.fillRect(120,320,20,60);
-          updateMap(120,320,20,60);
+        this.state =  Mover.initState;
+        
+        for (int i = 0; i < 20; i++)
+        	for (int j = 0; j < 20; j++)
+        		if (state[i][j]==0) g.fillRect(20 + i*20, 20 + j*20,20,20);
+         
+          for (int i = 0; i < 20; i++)
+        	  System.out.println(Arrays.toString(state[i])+",");
         drawLives(g);
   } 
 
@@ -852,7 +754,7 @@ public class Board extends JPanel
         {
           for (int j=1;j<20;j++)
           {
-            if ( pellets[i-1][j-1])
+            if (state[i-1][j-1]==2)
             g.fillOval(i*20+8,j*20+8,4,4);
           }
         }
@@ -872,8 +774,6 @@ public class Board extends JPanel
        Just kill the pacman*/ 
     if (dying > 0)
     {
-      /* Stop any pacman eating sounds */
-      sounds.nomNomStop();
 
       /* Draw the pacman */
       g.drawImage(pacmanImage,player.x,player.y,Color.BLACK,null);
@@ -934,8 +834,6 @@ public class Board extends JPanel
       g.fillRect(0,0,600,600);
       g.drawImage(titleScreenImage,0,0,Color.BLACK,null);
 
-      /* Stop any pacman eating sounds */
-      sounds.nomNomStop();
       New = 1;
       return;
     } 
@@ -947,8 +845,6 @@ public class Board extends JPanel
       g.fillRect(0,0,600,600);
       g.drawImage(winScreenImage,0,0,Color.BLACK,null);
       New = 1;
-      /* Stop any pacman eating sounds */
-      sounds.nomNomStop();
       return;
     }
 
@@ -959,8 +855,6 @@ public class Board extends JPanel
       g.fillRect(0,0,600,600);
       g.drawImage(gameOverImage,0,0,Color.BLACK,null);
       New = 1;
-      /* Stop any pacman eating sounds */
-      sounds.nomNomStop();
       return;
     }
 
@@ -986,10 +880,6 @@ public class Board extends JPanel
     {
       reset();
       player = new Player(200,300);
-      ghost1 = new Ghost(180,180);
-      ghost2 = new Ghost(200,180);
-      ghost3 = new Ghost(220,180);
-      ghost4 = new Ghost(220,180);
       currScore = 0;
       drawBoard(g);
       drawPellets(g);
@@ -997,11 +887,7 @@ public class Board extends JPanel
       /* Send the game map to player and all ghosts */
       player.updateState(state);
       /* Don't let the player go in the ghost box*/
-      player.state[9][7]=false; 
-      ghost1.updateState(state);
-      ghost2.updateState(state);
-      ghost3.updateState(state);
-      ghost4.updateState(state);
+      //player.state[9][7]=0; 
    
       /* Draw the top menu bar*/
       g.setColor(Color.YELLOW);
@@ -1021,8 +907,6 @@ public class Board extends JPanel
     else if (New == 3)
     {
       New++;
-      /* Play the newGame sound effect */
-      sounds.newGame();
       timer = System.currentTimeMillis();
       return;
     }
@@ -1031,7 +915,7 @@ public class Board extends JPanel
     {
       /* Stay in this state until the sound effect is over */
       long currTime = System.currentTimeMillis();
-      if (currTime - timer >= 5000)
+      if (currTime - timer >= 0)
       {
         New=0;
       }
@@ -1041,41 +925,14 @@ public class Board extends JPanel
     
     /* Drawing optimization */
     g.copyArea(player.x-20,player.y-20,80,80,0,0);
-    g.copyArea(ghost1.x-20,ghost1.y-20,80,80,0,0);
-    g.copyArea(ghost2.x-20,ghost2.y-20,80,80,0,0);
-    g.copyArea(ghost3.x-20,ghost3.y-20,80,80,0,0);
-    g.copyArea(ghost4.x-20,ghost4.y-20,80,80,0,0);
     
 
-
-    /* Detect collisions */
-    if (player.x == ghost1.x && Math.abs(player.y-ghost1.y) < 10)
-      oops=true;
-    else if (player.x == ghost2.x && Math.abs(player.y-ghost2.y) < 10)
-      oops=true;
-    else if (player.x == ghost3.x && Math.abs(player.y-ghost3.y) < 10)
-      oops=true;
-    else if (player.x == ghost4.x && Math.abs(player.y-ghost4.y) < 10)
-      oops=true;
-    else if (player.y == ghost1.y && Math.abs(player.x-ghost1.x) < 10)
-      oops=true;
-    else if (player.y == ghost2.y && Math.abs(player.x-ghost2.x) < 10)
-      oops=true;
-    else if (player.y == ghost3.y && Math.abs(player.x-ghost3.x) < 10)
-      oops=true;
-    else if (player.y == ghost4.y && Math.abs(player.x-ghost4.x) < 10)
-      oops=true;
 
     /* Kill the pacman */
     if (oops && !stopped)
     {
       /* 4 frames of death*/
       dying=4;
-      
-      /* Play death sound effect */
-      sounds.death();
-      /* Stop any pacman eating sounds */
-      sounds.nomNomStop();
 
       /*Decrement lives, update screen to reflect that.  And set appropriate flags and timers */
       numLives--;
@@ -1087,25 +944,18 @@ public class Board extends JPanel
     /* Delete the players and ghosts */
     g.setColor(Color.BLACK);
     g.fillRect(player.lastX,player.lastY,20,20);
-    g.fillRect(ghost1.lastX,ghost1.lastY,20,20);
-    g.fillRect(ghost2.lastX,ghost2.lastY,20,20);
-    g.fillRect(ghost3.lastX,ghost3.lastY,20,20);
-    g.fillRect(ghost4.lastX,ghost4.lastY,20,20);
 
     /* Eat pellets */
-    if ( pellets[player.pelletX][player.pelletY] && New!=2 && New !=3)
+    if ( state[player.pelletX][player.pelletY]==2 && New!=2 && New !=3)
     {
       lastPelletEatenX = player.pelletX;
       lastPelletEatenY = player.pelletY;
-
-      /* Play eating sound */
-      sounds.nomNom();
       
       /* Increment pellets eaten value to track for end game */
       player.pelletsEaten++;
 
       /* Delete the pellet*/
-      pellets[player.pelletX][player.pelletY]=false;
+      state[player.pelletX][player.pelletY]=0;
 
       /* Increment the score */
       currScore += 50;
@@ -1143,44 +993,12 @@ public class Board extends JPanel
     /* If we moved to a location without pellets, stop the sounds */
     else if ( (player.pelletX != lastPelletEatenX || player.pelletY != lastPelletEatenY ) || player.stopped)
     {
-      /* Stop any pacman eating sounds */
-      sounds.nomNomStop();
+
     }
 
 
-    /* Replace pellets that have been run over by ghosts */
-    if ( pellets[ghost1.lastPelletX][ghost1.lastPelletY])
-      fillPellet(ghost1.lastPelletX,ghost1.lastPelletY,g);
-    if ( pellets[ghost2.lastPelletX][ghost2.lastPelletY])
-      fillPellet(ghost2.lastPelletX,ghost2.lastPelletY,g);
-    if ( pellets[ghost3.lastPelletX][ghost3.lastPelletY])
-      fillPellet(ghost3.lastPelletX,ghost3.lastPelletY,g);
-    if ( pellets[ghost4.lastPelletX][ghost4.lastPelletY])
-      fillPellet(ghost4.lastPelletX,ghost4.lastPelletY,g);
 
-
-    /*Draw the ghosts */
-    if (ghost1.frameCount < 5)
-    {
-      /* Draw first frame of ghosts */
-      g.drawImage(ghost10,ghost1.x,ghost1.y,Color.BLACK,null);
-      g.drawImage(ghost20,ghost2.x,ghost2.y,Color.BLACK,null);
-      g.drawImage(ghost30,ghost3.x,ghost3.y,Color.BLACK,null);
-      g.drawImage(ghost40,ghost4.x,ghost4.y,Color.BLACK,null);
-      ghost1.frameCount++;
-    }
-    else
-    {
-      /* Draw second frame of ghosts */
-      g.drawImage(ghost11,ghost1.x,ghost1.y,Color.BLACK,null);
-      g.drawImage(ghost21,ghost2.x,ghost2.y,Color.BLACK,null);
-      g.drawImage(ghost31,ghost3.x,ghost3.y,Color.BLACK,null);
-      g.drawImage(ghost41,ghost4.x,ghost4.y,Color.BLACK,null);
-      if (ghost1.frameCount >=10)
-        ghost1.frameCount=0;
-      else
-        ghost1.frameCount++;
-    }
+ 
 
     /* Draw the pacman */
     if (player.frameCount < 5)

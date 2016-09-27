@@ -5,3 +5,6 @@
 /Pacman$1.class
 /Pacman.class
 /Player.class
+/Step.class
+/SearchPath.class
+/ISearchPath.class
