@@ -1,9 +1,9 @@
 /* Drew Schuster */
 import java.awt.*;
-import javax.imageio.*;
 import javax.swing.JPanel;
 import java.lang.Math;
 import java.util.*;
+import java.util.List;
 import java.io.*;
 
 
@@ -82,7 +82,7 @@ class Mover
 class Player extends Mover
 {
   /* Direction is used in demoMode, currDirection and desiredDirection are used in non demoMode*/ 
-  char direction;
+  Character direction;
   char currDirection;
   char desiredDirection;
 
@@ -97,6 +97,8 @@ class Player extends Mover
   int x;
   int y;
  
+  List<Character> path;
+  
   /* Which pellet the pacman is on top of */
   int pelletX;
   int pelletY;
@@ -106,11 +108,13 @@ class Player extends Mover
   
   /* Stopped is set when the pacman is not moving or has been killed */
   boolean stopped = false;
+  
+  public boolean reached;
 
   /* Constructor places pacman in initial location and orientation */
-  public Player(int x, int y)
+  public Player(int x, int y, List<Character> path)
   {
-
+	this.path = path;
     teleport=false;
     pelletsEaten=0;
     pelletX = x/gridSize-1;
@@ -125,71 +129,12 @@ class Player extends Mover
 
 
   /* This function is used for demoMode.  It is copied from the Ghost class.  See that for comments */
-  public char newDirection()
-  { 
-     int random;
-     char backwards='U';
-     int newX=x,newY=y;
-     int lookX=x,lookY=y;
-     Set<Character> set = new HashSet<Character>();
-    switch(direction)
-    {
-      case 'L':
-         backwards='R';
-         break;     
-      case 'R':
-         backwards='L';
-         break;     
-      case 'U':
-         backwards='D';
-         break;     
-      case 'D':
-         backwards='U';
-         break;     
-    }
-     char newDirection = backwards;
-     while (newDirection == backwards || !isValidDest(lookX,lookY))
-     {
-       if (set.size()==3)
-       {
-         newDirection=backwards;
-         break;
-       }
-       newX=x;
-       newY=y;
-       lookX=x;
-       lookY=y;
-       random = (int)(Math.random()*4) + 1;
-       if (random == 1)
-       {
-         newDirection = 'L';
-         newX-=increment; 
-         lookX-= increment;
-       }
-       else if (random == 2)
-       {
-         newDirection = 'R';
-         newX+=increment; 
-         lookX+= gridSize;
-       }
-       else if (random == 3)
-       {
-         newDirection = 'U';
-         newY-=increment; 
-         lookY-=increment;
-       }
-       else if (random == 4)
-       {
-         newDirection = 'D';
-         newY+=increment; 
-         lookY+=gridSize;
-       }
-       if (newDirection != backwards)
-       {
-         set.add(new Character(newDirection));
-       }
-     } 
-     return newDirection;
+  public Character newDirection()
+  {
+	 if (path!=null && path.size()>0)
+     return path.remove(0);
+	 else
+	 return null;
   }
 
   /* This function is used for demoMode.  It is copied from the Ghost class.  See that for comments */
@@ -211,6 +156,8 @@ class Player extends Mover
     {
       direction = newDirection();
     }
+    if (direction==null)
+    	return;
     switch(direction)
     {
       case 'L':
@@ -560,7 +507,7 @@ public class Board extends JPanel
   Image winScreenImage = Toolkit.getDefaultToolkit().getImage("img/winScreen.jpg");
 
   /* Initialize the player and ghosts */
-  Player player = new Player(200,300);
+  Player player;
 
   /* Timer is used for playing sound effects and animations */
   long timer = System.currentTimeMillis();
@@ -599,14 +546,22 @@ public class Board extends JPanel
   /* This is the font used for the menus */
   Font font = new Font("Monospaced",Font.BOLD, 12);
 
+ public List<Character> path;
+  
+ private int playerInitX;
+ private int playerInitY;
+ 
   /* Constructor initializes state flags etc.*/
-  public Board() 
+  public Board(int playerX, int playerY, List<Character> path) 
   {
+	this.path = path;
     initHighScores();
     currScore=0;
     stopped=false;
     max=400;
     gridSize=20;
+	playerInitX = (playerX+1)*gridSize;
+	playerInitY = (playerY+1)*gridSize;
     New=0;
     titleScreen = true;
   }
@@ -877,7 +832,7 @@ public class Board extends JPanel
     if (New==1)
     {
       reset();
-      player = new Player(200,300);
+      player = new Player(playerInitX,playerInitY, path);
       currScore = 0;
       drawBoard(g);
       drawPellets(g);
@@ -951,6 +906,7 @@ public class Board extends JPanel
       
       /* Increment pellets eaten value to track for end game */
       player.pelletsEaten++;
+      player.reached = true;
 
       /* Delete the pellet*/
       state[player.pelletX][player.pelletY]=0;

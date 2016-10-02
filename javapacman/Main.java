@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,13 +30,12 @@ public class Main {
     public static void main(String[] args){
         int x = 4;
         int y = 1;
-        int[] pellet = SearchPathImpl.getPosition(Mover.initState, 2);
         System.out.println("BFS");
-        List<Cell> path = SearchPathImpl.BREADTH_FIRST_SEARCH.getPath(initState, x, y, pellet[0], pellet[1]);
+        List<Cell> path = SearchPathImpl.BREADTH_FIRST_SEARCH.getPath(initState, x, y);
         print2dArray(apply(path));
 
         System.out.println("DFS");
-        path = SearchPathImpl.DEPTH_FIRST_SEARCH.getPath(initState, x, y, pellet[0], pellet[1]);
+        path = SearchPathImpl.DEPTH_FIRST_SEARCH.getPath(initState, x, y);
         print2dArray(apply(path));
     }
 
@@ -83,5 +83,29 @@ public class Main {
             }
             System.out.println();
         }
+    }
+    
+    public static List<Character> convertPath (List<Cell> path) {
+    	if (path==null || path.size()==0)
+    		return null;
+    	ArrayList<Character> result = new ArrayList<>(); 
+        for (int i = 0; i < path.size()-1; i++) {
+        	result.add(detectDirection(path.get(i), path.get(i+1)));
+        }
+        System.out.println();
+		return result;
+    }
+    
+    public static char detectDirection (Cell from, Cell to) {
+		if (from.i > to.i) {
+			return 'L';
+		} else if (from.i < to.i) {
+			return 'R';
+		}
+		if (from.j > to.j) {
+			return 'U';
+		} else {
+			return 'D';
+		}
     }
 }

@@ -1,11 +1,8 @@
 /* Drew Schuster */
 import javax.swing.*;
 import java.awt.event.*;
-import java.awt.geom.Point2D;
 import javax.swing.JApplet;
 import java.awt.*;
-import java.util.*;
-import java.lang.*;
 import java.util.List;
 
 /* This class contains the entire game... most of the game logic is in the Board class but this
@@ -20,13 +17,17 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 	long timer = -1;
 
 	/* Create a new board */
-	Board b = new Board();
+	Board b;
+	
+	public List<Character> path;
 
 	/* This timer is used to do request new frames be drawn */
 	javax.swing.Timer frameTimer;
 
 	/* This constructor creates the entire game essentially */
-	public Pacman() {
+	public Pacman(int playerX, int playerY,List<Character> path) {
+		this.path = path;
+		b = new Board(playerX, playerY, path);
 		b.requestFocus();
 
 		/* Create and set up window frame */
@@ -114,9 +115,9 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 			}
 
 			long currTime = System.currentTimeMillis();
-			if (currTime - titleTimer >= 5000) {
+			if (currTime - titleTimer >= 0) {
 				b.titleScreen = false;
-				b.demo = false;
+				b.demo = true;
 				titleTimer = -1;
 			}
 			b.repaint();
@@ -168,6 +169,12 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 		 * We either have a new game or the user has died, either way we have to
 		 * reset the board
 		 */
+		
+		if (b.player.reached) {
+			frameTimer.stop();
+			return;
+		}
+		
 		if (b.stopped || New) {
 			/* Temporarily stop advancing frames */
 			frameTimer.stop();
@@ -202,48 +209,48 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 
 	/* Handles user key presses */
 	public void keyPressed(KeyEvent e) {
-		/* Pressing a key in the title screen starts a game */
-		if (b.titleScreen) {
-			b.titleScreen = false;
-			return;
-		}
-		/*
-		 * Pressing a key in the win screen or game over screen goes to the
-		 * title screen
-		 */
-		else if (b.winScreen || b.overScreen) {
-			b.titleScreen = true;
-			b.winScreen = false;
-			b.overScreen = false;
-			return;
-		}
-		/*
-		 * Pressing a key during a demo kills the demo mode and starts a new
-		 * game
-		 */
-		else if (b.demo) {
-			b.demo = false;
-			b.New = 1;
-			return;
-		}
-		
-		/* Otherwise, key presses control the player! */
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_LEFT:
-			b.player.desiredDirection = 'L';
-			break;
-		case KeyEvent.VK_RIGHT:
-			b.player.desiredDirection = 'R';
-			break;
-		case KeyEvent.VK_UP:
-			b.player.desiredDirection = 'U';
-			break;
-		case KeyEvent.VK_DOWN:
-			b.player.desiredDirection = 'D';
-			break;
-		}
-
-		repaint();
+//		/* Pressing a key in the title screen starts a game */
+//		if (b.titleScreen) {
+//			b.titleScreen = false;
+//			return;
+//		}
+//		/*
+//		 * Pressing a key in the win screen or game over screen goes to the
+//		 * title screen
+//		 */
+//		else if (b.winScreen || b.overScreen) {
+//			b.titleScreen = true;
+//			b.winScreen = false;
+//			b.overScreen = false;
+//			return;
+//		}
+//		/*
+//		 * Pressing a key during a demo kills the demo mode and starts a new
+//		 * game
+//		 */
+//		else if (b.demo) {
+//			b.demo = false;
+//			b.New = 1;
+//			return;
+//		}
+//		
+//		/* Otherwise, key presses control the player! */
+//		switch (e.getKeyCode()) {
+//		case KeyEvent.VK_LEFT:
+//			b.player.desiredDirection = 'L';
+//			break;
+//		case KeyEvent.VK_RIGHT:
+//			b.player.desiredDirection = 'R';
+//			break;
+//		case KeyEvent.VK_UP:
+//			b.player.desiredDirection = 'U';
+//			break;
+//		case KeyEvent.VK_DOWN:
+//			b.player.desiredDirection = 'D';
+//			break;
+//		}
+//
+//		repaint();
 	}
 
 	/*
@@ -293,13 +300,14 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 
 	/* Main function simply creates a new pacman instance */
 	public static void main(String[] args) {
-		Pacman c = new Pacman();
-
-		int x = c.b.player.x/c.b.player.gridSize-1;
-		int y = c.b.player.y/c.b.player.gridSize-1;
-		List<Cell> path = SearchPathImpl.BREADTH_FIRST_SEARCH.getPath(Mover.initState, x, y);
+		
+		int playerX = 9;
+		int playerY = 14;
+		List<Cell> path = SearchPathImpl.BREADTH_FIRST_SEARCH.getPath(Mover.initState, playerX, playerY);
 		System.out.println(path);
-		path = SearchPathImpl.DEPTH_FIRST_SEARCH.getPath(Mover.initState, x, y);
+		path = SearchPathImpl.DEPTH_FIRST_SEARCH.getPath(Mover.initState, playerX, playerY);
 		System.out.println(path);
+		
+		Pacman c = new Pacman(playerX, playerY, Main.convertPath(path));
 	}
 }
