@@ -740,8 +740,6 @@ public class Board extends JPanel
         	for (int j = 0; j < 20; j++)
         		if (state[i][j]==0) g.fillRect(20 + i*20, 20 + j*20,20,20);
          
-          for (int i = 0; i < 20; i++)
-        	  System.out.println(Arrays.toString(state[i])+",");
         drawLives(g);
   } 
 

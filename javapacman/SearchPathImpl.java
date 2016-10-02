@@ -9,7 +9,10 @@ public class SearchPathImpl {
 
     public static final ISearchPath BREADTH_FIRST_SEARCH = new ISearchPath() {
         @Override
-        public List<Cell> getPath(int[][] world, int xPlayer, int yPlayer, int xPellet, int yPellet) {
+        public List<Cell> getPath(int[][] world, int xPlayer, int yPlayer) {
+        	int[] point = getPosition(world, 2);
+        	int xPellet = point[0];
+        	int yPellet = point[1];
             System.out.println("Player: " +xPlayer + ", " + yPlayer);
             System.out.println("Pellet: " + xPellet + ", " + yPellet);
             //print2dArray(world);
@@ -46,7 +49,10 @@ public class SearchPathImpl {
 
     public static final ISearchPath DEPTH_FIRST_SEARCH = new ISearchPath() {
         @Override
-        public List<Cell> getPath(int[][] world, int xPlayer, int yPlayer, int xPellet, int yPellet) {
+        public List<Cell> getPath(int[][] world, int xPlayer, int yPlayer) {
+        	int[] point = getPosition(world, 2);
+        	int xPellet = point[0];
+        	int yPellet = point[1];
             System.out.println("Player: " +xPlayer + ", " + yPlayer);
             System.out.println("Pellet: " + xPellet + ", " + yPellet);
             //print2dArray(world);

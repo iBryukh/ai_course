@@ -297,10 +297,9 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 
 		int x = c.b.player.x/c.b.player.gridSize-1;
 		int y = c.b.player.y/c.b.player.gridSize-1;
-		int[] pellet = SearchPathImpl.getPosition(Mover.initState, 2);
-		List<Cell> path = SearchPathImpl.BREADTH_FIRST_SEARCH.getPath(Mover.initState, x, y, pellet[0], pellet[1]);
+		List<Cell> path = SearchPathImpl.BREADTH_FIRST_SEARCH.getPath(Mover.initState, x, y);
 		System.out.println(path);
-		path = SearchPathImpl.DEPTH_FIRST_SEARCH.getPath(Mover.initState, x, y, pellet[0], pellet[1]);
+		path = SearchPathImpl.DEPTH_FIRST_SEARCH.getPath(Mover.initState, x, y);
 		System.out.println(path);
 	}
 }
