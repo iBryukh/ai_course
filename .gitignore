@@ -218,3 +218,4 @@ pip-log.txt
 *.iml
 target/
 src/main/resources/rebel.xml
+javapacman/out

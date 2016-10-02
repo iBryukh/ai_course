@@ -6,6 +6,7 @@ import javax.swing.JApplet;
 import java.awt.*;
 import java.util.*;
 import java.lang.*;
+import java.util.List;
 
 /* This class contains the entire game... most of the game logic is in the Board class but this
  creates the gui and captures mouse and keyboard input, as well as controls the game states */
@@ -293,5 +294,13 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 	/* Main function simply creates a new pacman instance */
 	public static void main(String[] args) {
 		Pacman c = new Pacman();
+
+		int x = c.b.player.x/c.b.player.gridSize-1;
+		int y = c.b.player.y/c.b.player.gridSize-1;
+		int[] pellet = SearchPathImpl.getPosition(Mover.initState, 2);
+		List<Cell> path = SearchPathImpl.BREADTH_FIRST_SEARCH.getPath(Mover.initState, x, y, pellet[0], pellet[1]);
+		System.out.println(path);
+		path = SearchPathImpl.DEPTH_FIRST_SEARCH.getPath(Mover.initState, x, y, pellet[0], pellet[1]);
+		System.out.println(path);
 	}
 }
