@@ -11,9 +11,12 @@ public class SearchPathImpl {
         @Override
         public List<Cell> getPath(int[][] world, int xPlayer, int yPlayer) {
         	int[] point = getPosition(world, 2);
+            if(point == null)
+                return null;
+
         	int xPellet = point[0];
         	int yPellet = point[1];
-            System.out.println("Player: " +xPlayer + ", " + yPlayer);
+            System.out.println("Player: " + xPlayer + ", " + yPlayer);
             System.out.println("Pellet: " + xPellet + ", " + yPellet);
             //print2dArray(world);
 
@@ -51,9 +54,11 @@ public class SearchPathImpl {
         @Override
         public List<Cell> getPath(int[][] world, int xPlayer, int yPlayer) {
         	int[] point = getPosition(world, 2);
+            if(point == null)
+                return null;
         	int xPellet = point[0];
         	int yPellet = point[1];
-            System.out.println("Player: " +xPlayer + ", " + yPlayer);
+            System.out.println("Player: " + xPlayer + ", " + yPlayer);
             System.out.println("Pellet: " + xPellet + ", " + yPellet);
             //print2dArray(world);
 
@@ -84,6 +89,75 @@ public class SearchPathImpl {
             }
 
             return null;
+        }
+    };
+
+    public static final ISearchPath GREEDY_SEARCH = new ISearchPath() {
+        boolean[][] visited;
+        @Override
+        public List<Cell> getPath(int[][] world, int xPlayer, int yPlayer) {
+            int[] point = getPosition(world, 2);
+            if(point == null)
+                return null;
+
+            int xPellet = point[0];
+            int yPellet = point[1];
+            System.out.println("Player: " + xPlayer + ", " + yPlayer);
+            System.out.println("Pellet: " + xPellet + ", " + yPellet);
+            //print2dArray(world);
+
+            visited = new boolean[world.length][world[0].length];
+            //visited[xPlayer][yPlayer] = true;
+
+            Queue<Cell> cells = new ArrayDeque<>();
+            cells.add(new Cell(xPlayer, yPlayer, null));
+
+            while(!cells.isEmpty()){
+                Cell cell = getMin(cells.iterator(), xPellet, yPellet);
+                if(visited[cell.i][cell.j])
+                    continue;
+
+                visited[cell.i][cell.j] = true;
+                cells.remove(cell);
+                if(cell.i == xPellet && cell.j == yPellet){
+                    List<Cell> path = new ArrayList<>();
+                    if(cell.parents != null){
+                        for(Cell c : cell.parents){
+                            path.add(c);
+                        }
+                    }
+                    path.add(cell);
+                    return path;
+                }
+
+                for(Cell c : getChildren(world, cell)){
+                    if(!visited[c.i][c.j]){
+                        cells.add(c);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private Cell getMin(Iterator<Cell> iterator, int pelletX, int pelletY){
+            Cell result = iterator.next();
+            int min = mark(result, pelletX, pelletY);
+            while(iterator.hasNext()){
+                Cell currentCell = iterator.next();
+                if(!visited[currentCell.i][currentCell.j]) {
+                    int currentMin = mark(currentCell, pelletX, pelletY);
+                    if (currentMin < min) {
+                        result = currentCell;
+                        min = currentMin;
+                    }
+                }
+            }
+            return result;
+        }
+
+        private int mark(Cell c, int pelletX, int pelletY){
+            return Math.abs(c.i - pelletX) + Math.abs(c.j - pelletY);
         }
     };
 
@@ -130,18 +204,14 @@ public class SearchPathImpl {
     }
 
     public static int[] getPosition(int[][] array, int val){
-        int[] res = new int[2];
         for(int i = 0; i < array.length; ++i){
             for(int j = 0; j < array[i].length; ++j){
                 if(array[i][j] == val){
-                    res[0] = i;
-                    res[1] = j;
-
-                    break;
+                    return new int[]{i, j};
                 }
             }
         }
 
-        return res;
+        return null;
     }
 }

@@ -31,12 +31,13 @@ public class Main {
         int x = 4;
         int y = 1;
         System.out.println("BFS");
-        List<Cell> path = SearchPathImpl.BREADTH_FIRST_SEARCH.getPath(initState, x, y);
+        List<Cell> path = SearchPathImpl.GREEDY_SEARCH.getPath(initState, x, y);
+        System.out.println(path);
         print2dArray(apply(path));
 
         System.out.println("DFS");
-        path = SearchPathImpl.DEPTH_FIRST_SEARCH.getPath(initState, x, y);
-        print2dArray(apply(path));
+        //path = SearchPathImpl.DEPTH_FIRST_SEARCH.getPath(initState, x, y);
+        //print2dArray(apply(path));
     }
 
     private static String[][] apply(List<Cell> path){

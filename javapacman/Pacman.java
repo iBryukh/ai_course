@@ -192,8 +192,8 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 			b.player.currDirection = 'L';
 			b.player.direction = 'L';
 			b.player.desiredDirection = 'L';
-			b.player.x = 200;
-			b.player.y = 300;
+			//b.player.x = 200;
+			//b.player.y = 300;
 			/* Advance a frame to display main state */
 			b.repaint(0, 0, 600, 600);
 
@@ -301,11 +301,11 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 	/* Main function simply creates a new pacman instance */
 	public static void main(String[] args) {
 		
-		int playerX = 9;
-		int playerY = 14;
-		List<Cell> path = SearchPathImpl.BREADTH_FIRST_SEARCH.getPath(Mover.initState, playerX, playerY);
+		int playerX = 2;
+		int playerY = 6;
+		List<Cell> path = SearchPathImpl.DEPTH_FIRST_SEARCH.getPath(Mover.initState, playerX, playerY);
 		System.out.println(path);
-		path = SearchPathImpl.DEPTH_FIRST_SEARCH.getPath(Mover.initState, playerX, playerY);
+		path = SearchPathImpl.GREEDY_SEARCH.getPath(Mover.initState, playerX, playerY);
 		System.out.println(path);
 		
 		Pacman c = new Pacman(playerX, playerY, Main.convertPath(path));
