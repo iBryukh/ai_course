@@ -5,6 +5,9 @@ import java.util.HashMap;
 import org.jacop.core.*; 
 import org.jacop.constraints.*;
 import org.jacop.search.*; 
+
+import enums.Room;
+import enums.Subject;
  
 public class Main { 
 	
