@@ -34,13 +34,17 @@ public class Scedule {
 	
 	public void generate() {
 		IntVar[] arr = getGroupsArray();
-		shuffleArray(arr);
-		
-		Search<IntVar> search = new DepthFirstSearch<IntVar>(); 
-        SelectChoicePoint<IntVar> select = 
-            new InputOrderSelect<IntVar>(store, arr, 
-                                         new IndomainMin<IntVar>()); 
-        boolean result = search.labeling(store, select); 
+		boolean result = false;
+		while(!result) {
+			shuffleArray(arr);
+			Search<IntVar> search = new DepthFirstSearch<IntVar>(); 
+			search.setTimeOut(2);
+			search.setPrintInfo(false);
+	        SelectChoicePoint<IntVar> select = 
+	            new InputOrderSelect<IntVar>(store, arr, 
+	                                         new IndomainMin<IntVar>()); 
+	        result = search.labeling(store, select); 
+		}
 	}
 	
 	public String toString() {
@@ -124,13 +128,24 @@ public class Scedule {
 											VIRUSOLOGY_P,
 											HISTORY_OF_UKRAINIAN_CULTURE_L,
 											JAVA_SCRIPT_L	};
+
+		Subject[] subjects_primath_1 =  {	PEOM_L,
+											PEOM_P,
+											MATHEMATICAL_ANALISYS_L,
+											MATHEMATICAL_ANALISYS_P,
+											PHYSICAL_CULTURE,
+											PHYSICAL_CULTURE_2,
+											DISCRETE_MATHEMATICS_L,
+											DISCRETE_MATHEMATICS_P,
+											MOHYLA_STUDIES_L,
+											MOHYLA_STUDIES_P,
+											JAVA_L,
+											JAVA_P };
 		scedule.setRooms(Room.values());
-		new Group("primath-4", subjects_primath_4, scedule);
-		new Group("primath-3", subjects_primath_4, scedule);
+		new Group("primath-4", subjects_primath_1, scedule);
+		new Group("primath-3", subjects_primath_1, scedule);
 		new Group("primath-2", subjects_primath_4, scedule);
 		new Group("primath-1", subjects_primath_4, scedule);
-		//scedule.setSubjectRoomConstraint(Subject.);
-		//group.addMainConstraints();
 		scedule.generate();
 		scedule.show();
 	}
