@@ -512,6 +512,8 @@ public class Board extends JPanel
     gridSize=20;
 	playerInitX = (playerX+1)*gridSize;
 	playerInitY = (playerY+1)*gridSize;
+	ghostInitX = (ghostX+1)*gridSize;
+	ghostInitY = (ghostY+1)*gridSize;
     New=0;
     titleScreen = true;
   }

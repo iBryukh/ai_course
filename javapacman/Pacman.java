@@ -199,6 +199,8 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 			b.player.desiredDirection = 'L';
 			//b.player.x = 200;
 			//b.player.y = 300;
+			//b.ghost1.x = 180;
+			//b.ghost1.y = 180;
 			/* Advance a frame to display main state */
 			b.repaint(0, 0, 600, 600);
 
@@ -308,6 +310,7 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 		
 		int playerX = 2;
 		int playerY = 6;
+		int ghostX = 3;
 		int ghostY = 6;
 		
 		List<Cell> pathP = SearchPathImpl.GREEDY_SEARCH.getPath(Mover.initState, playerX, playerY);
