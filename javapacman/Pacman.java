@@ -1,7 +1,10 @@
 /* Drew Schuster */
 import javax.swing.*;
+
 import java.awt.event.*;
+
 import javax.swing.JApplet;
+
 import java.awt.*;
 import java.util.List;
 
@@ -25,9 +28,9 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 	javax.swing.Timer frameTimer;
 
 	/* This constructor creates the entire game essentially */
-	public Pacman(int playerX, int playerY,List<Character> path) {
+	public Pacman(int playerX, int playerY, int ghostX, int ghostY, List<Character> pathPlayer, List<Character> pathGhost) {
 		this.path = path;
-		b = new Board(playerX, playerY, path);
+		b = new Board(playerX, playerY, ghostX, ghostY, pathPlayer, pathGhost);
 		b.requestFocus();
 
 		/* Create and set up window frame */
@@ -76,6 +79,7 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 		b.repaint(0, 0, 600, 20);
 		b.repaint(0, 420, 600, 40);
 		b.repaint(b.player.x - 20, b.player.y - 20, 80, 80);
+		b.repaint(b.ghost1.x - 20, b.ghost1.y - 20, 80, 80);
 	}
 
 	/* Steps the screen forward one frame */
@@ -162,6 +166,7 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 			}
 
 			/* Also move the ghosts, and update the pellet states */
+			b.ghost1.move();
 			b.player.updatePellet();
 		}
 
@@ -303,10 +308,13 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 		
 		int playerX = 2;
 		int playerY = 6;
+		int ghostY = 6;
 		
-		List<Cell> path = SearchPathImpl.GREEDY_SEARCH.getPath(Mover.initState, playerX, playerY);
-		System.out.println(path);
+		List<Cell> pathP = SearchPathImpl.GREEDY_SEARCH.getPath(Mover.initState, playerX, playerY);
+		System.out.println(pathP);
+		List<Cell> pathG = SearchPathImpl.GREEDY_SEARCH.getPath(Mover.initState, ghostX, ghostY);
+		System.out.println(pathG);
 		
-		Pacman c = new Pacman(playerX, playerY, Main.convertPath(path));
+		Pacman c = new Pacman(playerX, playerY, ghostX, ghostY, Main.convertPath(pathP), Main.convertPath(pathG));
 	}
 }

@@ -1,6 +1,8 @@
 /* Drew Schuster */
 import java.awt.*;
+
 import javax.swing.JPanel;
+
 import java.lang.Math;
 import java.util.*;
 import java.util.List;
@@ -301,7 +303,7 @@ class Player extends Mover
 class Ghost extends Mover
 { 
   /* Direction ghost is heading */
-  char direction;
+  Character direction;
 
   /* Last ghost location*/
   int lastX;
@@ -317,9 +319,12 @@ class Ghost extends Mover
   /* The pellet the ghost was last on top of */
   int lastPelletX,lastPelletY;
 
+  List<Character> path;
+  
   /*Constructor places ghost and updates states*/
-  public Ghost(int x, int y)
+  public Ghost(int x, int y, List<Character> path)
   {
+	  this.path = path;
     direction='L';
     pelletX=x/gridSize-1;
     pelletY=x/gridSize-1;
@@ -358,77 +363,12 @@ class Ghost extends Mover
   }
 
   /* Chooses a new direction randomly for the ghost to move */
-  public char newDirection()
+  public Character newDirection()
   { 
-    int random;
-    char backwards='U';
-    int newX=x,newY=y;
-    int lookX=x,lookY=y;
-    Set<Character> set = new HashSet<Character>();
-    switch(direction)
-    {
-      case 'L':
-         backwards='R';
-         break;     
-      case 'R':
-         backwards='L';
-         break;     
-      case 'U':
-         backwards='D';
-         break;     
-      case 'D':
-         backwards='U';
-         break;     
-    }
-
-    char newDirection = backwards;
-    /* While we still haven't found a valid direction */
-    while (newDirection == backwards || !isValidDest(lookX,lookY))
-    {
-      /* If we've tried every location, turn around and break the loop */
-      if (set.size()==3)
-      {
-        newDirection=backwards;
-        break;
-      }
-
-      newX=x;
-      newY=y;
-      lookX=x;
-      lookY=y;
-      
-      /* Randomly choose a direction */
-      random = (int)(Math.random()*4) + 1;
-      if (random == 1)
-      {
-        newDirection = 'L';
-        newX-=increment; 
-        lookX-= increment;
-      }
-      else if (random == 2)
-      {
-        newDirection = 'R';
-        newX+=increment; 
-        lookX+= gridSize;
-      }
-      else if (random == 3)
-      {
-        newDirection = 'U';
-        newY-=increment; 
-        lookY-=increment;
-      }
-      else if (random == 4)
-      {
-        newDirection = 'D';
-        newY+=increment; 
-        lookY+=gridSize;
-      }
-      if (newDirection != backwards)
-      {
-        set.add(new Character(newDirection));
-      }
-    } 
-    return newDirection;
+	  if (path!=null && path.size()>0)
+	     return path.remove(0);
+	else
+		 return null;
   }
 
   /* Random move function for ghost */
@@ -440,7 +380,9 @@ class Ghost extends Mover
     /* If we can make a decision, pick a new direction randomly */
     if (isChoiceDest())
     {
-      direction = newDirection();
+      if ((direction = newDirection())==null) {
+    	  return;
+      }
     }
     
     /* If that direction is valid, move that way */
@@ -510,6 +452,7 @@ public class Board extends JPanel
 
   /* Initialize the player and ghosts */
   Player player;
+  Ghost ghost1;
 
   /* Timer is used for playing sound effects and animations */
   long timer = System.currentTimeMillis();
@@ -548,15 +491,20 @@ public class Board extends JPanel
   /* This is the font used for the menus */
   Font font = new Font("Monospaced",Font.BOLD, 12);
 
- public List<Character> path;
+ public List<Character> pathPlayer;
+ public List<Character> pathGhost;
   
  private int playerInitX;
  private int playerInitY;
+ private int ghostInitX;
+ private int ghostInitY;
+ 
  
   /* Constructor initializes state flags etc.*/
-  public Board(int playerX, int playerY, List<Character> path) 
+  public Board(int playerX, int playerY, int ghostX, int ghostY, List<Character> pathPlayer, List<Character> pathGhost) 
   {
-	this.path = path;
+	this.pathPlayer = pathPlayer;
+	this.pathGhost = pathGhost;
     initHighScores();
     currScore=0;
     stopped=false;
@@ -834,13 +782,15 @@ public class Board extends JPanel
     if (New==1)
     {
       reset();
-      player = new Player(playerInitX,playerInitY, path);
+      player = new Player(playerInitX,playerInitY, pathPlayer);
+      ghost1 = new Ghost(ghostInitX, ghostInitY, pathGhost);
       currScore = 0;
       drawBoard(g);
       drawPellets(g);
       drawLives(g);
       /* Send the game map to player and all ghosts */
       player.updateState(state);
+      ghost1.updateState(state);
       /* Don't let the player go in the ghost box*/
       //player.state[9][7]=0; 
    
@@ -880,6 +830,7 @@ public class Board extends JPanel
     
     /* Drawing optimization */
     g.copyArea(player.x-20,player.y-20,80,80,0,0);
+    g.copyArea(ghost1.x-20,ghost1.y-20,80,80,0,0);
     
 
 
@@ -899,6 +850,7 @@ public class Board extends JPanel
     /* Delete the players and ghosts */
     g.setColor(Color.BLACK);
     g.fillRect(player.lastX,player.lastY,20,20);
+    g.fillRect(ghost1.lastX,ghost1.lastY,20,20);
 
     /* Eat pellets */
     if ( state[player.pelletX][player.pelletY]==2 && New!=2 && New !=3)
@@ -953,7 +905,22 @@ public class Board extends JPanel
     }
 
 
-
+    /*Draw the ghosts */
+    if (ghost1.frameCount < 5)
+    {
+      /* Draw first frame of ghosts */
+      g.drawImage(ghost10,ghost1.x,ghost1.y,Color.BLACK,null);
+      ghost1.frameCount++;
+    }
+    else
+    {
+      /* Draw second frame of ghosts */
+      g.drawImage(ghost11,ghost1.x,ghost1.y,Color.BLACK,null);
+      if (ghost1.frameCount >=10)
+        ghost1.frameCount=0;
+      else
+        ghost1.frameCount++;
+    }
  
 
     /* Draw the pacman */
