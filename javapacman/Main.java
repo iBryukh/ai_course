@@ -98,6 +98,8 @@ public class Main {
     }
     
     public static char detectDirection (Cell from, Cell to) {
+    	if (from.equals(to))
+    		return 'O';
 		if (from.i > to.i) {
 			return 'L';
 		} else if (from.i < to.i) {

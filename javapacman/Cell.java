@@ -9,6 +9,8 @@ public class Cell {
     int i;
 
     int j;
+    
+    int value;
 
     List<Cell> parents;
 

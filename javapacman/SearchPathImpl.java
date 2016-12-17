@@ -161,7 +161,7 @@ public class SearchPathImpl {
         }
     };
 
-    private static List<Cell> getChildren(int[][] world, Cell cell){
+    public static List<Cell> getChildren(int[][] world, Cell cell){
         List<Cell> result = new ArrayList<>();
         int i = cell.i;
         int j = cell.j;
@@ -189,11 +189,12 @@ public class SearchPathImpl {
             if(world[i][j+1] != WALL)
                 result.add(new Cell(i, j+1, cell.parents).add(cell));
         }
-
+        //same cell
+        result.add(new Cell(i, j, cell.parents).add(cell));
         return result;
     }
 
-    private static void print2dArray(int[][] array){
+    public static void print2dArray(int[][] array){
         for(int i = 0; i < array.length; ++i){
             System.out.print("{");
             for(int j = 0; j < array[i].length; ++j){

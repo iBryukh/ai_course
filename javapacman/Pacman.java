@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.JApplet;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /* This class contains the entire game... most of the game logic is in the Board class but this
@@ -308,16 +309,13 @@ public class Pacman extends JApplet implements MouseListener, KeyListener {
 	/* Main function simply creates a new pacman instance */
 	public static void main(String[] args) {
 		
-		int playerX = 2;
-		int playerY = 6;
-		int ghostX = 3;
-		int ghostY = 6;
+		int playerX = 0;
+		int playerY = 0;
+		int ghostX = 5;
+		int ghostY = 8;
 		
-		List<Cell> pathP = SearchPathImpl.GREEDY_SEARCH.getPath(Mover.initState, playerX, playerY);
-		System.out.println(pathP);
-		List<Cell> pathG = SearchPathImpl.GREEDY_SEARCH.getPath(Mover.initState, ghostX, ghostY);
-		System.out.println(pathG);
+		List<ArrayList<Cell>> path = AntagoSearchPathImpl.MINI_MAX_SEARCH.getPath(Mover.initState, playerX, playerY, ghostX, ghostY);
 		
-		Pacman c = new Pacman(playerX, playerY, ghostX, ghostY, Main.convertPath(pathP), Main.convertPath(pathG));
+		new Pacman(playerX, playerY, ghostX, ghostY, Main.convertPath(path.get(0)), Main.convertPath(path.get(1)));
 	}
 }
